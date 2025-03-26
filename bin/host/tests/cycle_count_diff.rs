@@ -34,6 +34,7 @@ async fn test_in_zkvm() {
         cache_dir: None,
         custom_beneficiary: None,
         prove: false,
+        max_proving_concurrency: usize::MAX,
         opcode_tracking: false,
     };
 

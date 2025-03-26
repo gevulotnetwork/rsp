@@ -15,13 +15,26 @@ pub struct Args {
     #[clap(long, env)]
     pub ws_rpc_url: Url,
 
-    /// Whether to generate a proof or just execute the block.
-    #[clap(long)]
-    pub execute_only: bool,
+    /// Retry count on failed execution.
+    #[clap(long, env, default_value_t = 3)]
+    pub execution_retries: usize,
 
-    /// The interval at which to execute blocks.
-    #[clap(long, default_value_t = 100)]
-    pub block_interval: u64,
+    /// Number of all workers in the Gevulot pool.
+    #[clap(long, env)]
+    pub total_workers: u64,
+
+    /// Assignment of current worker - value between <1, workers>.
+    /// Used to split the work between multiple instances.
+    #[clap(long, env)]
+    pub worker_pos: u64,
+
+    /// The maximum number of concurrent tasks.
+    #[clap(long, env)]
+    pub max_concurrent_tasks: usize,
+
+    /// The maximum number of concurrent executions.
+    #[clap(long, env, default_value_t = 1)]
+    pub max_proving_concurrency: usize,
 
     /// ETH proofs endpoint.
     #[clap(long, env)]
@@ -38,10 +51,6 @@ pub struct Args {
     /// PagerDuty integration key.
     #[clap(long, env)]
     pub pager_duty_integration_key: Option<String>,
-
-    /// Moongate server endpoint.
-    #[clap(long, env)]
-    pub moongate_endpoint: Option<String>,
 }
 
 impl Args {
@@ -52,8 +61,8 @@ impl Args {
             rpc_url: Some(self.http_rpc_url.clone()),
             cache_dir: None,
             custom_beneficiary: None,
-            prove: !self.execute_only,
-            max_proving_concurrency: usize::MAX,
+            prove: true,
+            max_proving_concurrency: self.max_proving_concurrency,
             opcode_tracking: false,
         };
 

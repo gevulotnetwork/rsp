@@ -96,6 +96,7 @@ impl HostArgs {
             cache_dir: self.cache_dir.clone(),
             custom_beneficiary: self.custom_beneficiary,
             prove: self.prove,
+            max_proving_concurrency: usize::MAX,
             opcode_tracking: self.opcode_tracking,
         };
 
