@@ -3,6 +3,7 @@ members = [
     "bin/host",
     "bin/continuous",
     "bin/eth-proofs",
+    "bin/gevulot",
     "crates/executor/client",
     "crates/executor/host",
     "crates/mpt",
@@ -52,11 +53,11 @@ rsp-primitives = { path = "./crates/primitives" }
 rsp-provider = { path = "./crates/provider" }
 
 
-# sp1
-sp1-build = "4.1.4"
-sp1-core-executor = "4.1.4"
-sp1-prover = "4.1.4"
-sp1-sdk = "4.1.4"
+# sp1 (with a custom feature of selecting particular GPU)
+sp1-build = { version = "4.1.4", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-core-executor = { version = "4.1.4", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-prover = { version = "4.1.4", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-sdk = { version = "4.1.4", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
 
 # reth
 # the rev 6b602f433ed7a67c8c2e255569f262c044601c53 contains the following commit that allow to `Send` block execution strategy factory:

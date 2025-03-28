@@ -2709,6 +2709,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "gevulot"
+version = "0.1.0"
+dependencies = [
+ "alloy-chains",
+ "alloy-consensus 0.12.6",
+ "alloy-network 0.12.6",
+ "alloy-provider",
+ "base64 0.22.1",
+ "clap",
+ "dotenv",
+ "eyre",
+ "futures",
+ "reqwest",
+ "reqwest-middleware",
+ "reqwest-retry",
+ "rsp-host-executor",
+ "rsp-primitives",
+ "rsp-provider",
+ "serde",
+ "serde_json",
+ "sp1-build",
+ "sp1-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "url",
+]
+
+[[package]]
 name = "gimli"
 version = "0.31.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6644,8 +6673,7 @@ dependencies = [
 [[package]]
 name = "sp1-build"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9481ef879fdd5337a3c5181b445a4b63da920e9491ce9e85a25372620a9ef6bb"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "anyhow",
  "cargo_metadata",
@@ -6657,8 +6685,7 @@ dependencies = [
 [[package]]
 name = "sp1-core-executor"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6f87ff0a7844ebfcdf4c1c8fc5b4358f7dbd794c0af01c1ae77d371226a9f24"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "bincode",
  "bytemuck",
@@ -6681,7 +6708,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sp1-curves",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-stark",
  "strum 0.26.3",
  "strum_macros 0.26.4",
@@ -6696,8 +6723,7 @@ dependencies = [
 [[package]]
 name = "sp1-core-machine"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08275d67c457832cfdff80e61a6982e267e04f117d248eb6f0ac8e4e0fb981d6"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "bincode",
  "cbindgen",
@@ -6735,7 +6761,7 @@ dependencies = [
  "sp1-core-executor",
  "sp1-curves",
  "sp1-derive",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-stark",
  "static_assertions",
  "strum 0.26.3",
@@ -6752,8 +6778,7 @@ dependencies = [
 [[package]]
 name = "sp1-cuda"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30bc32254578ff9da654517fdf9681bd04f62ab5231f8ad631dc30dd42adb955"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "bincode",
  "ctrlc",
@@ -6769,8 +6794,7 @@ dependencies = [
 [[package]]
 name = "sp1-curves"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "356b371c76fa5c14f860aa2714242fdcffc88bed7fae8f8f890f12949bb2aeab"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "cfg-if",
  "dashu",
@@ -6783,7 +6807,7 @@ dependencies = [
  "p3-field",
  "serde",
  "snowbridge-amcl",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-stark",
  "typenum",
 ]
@@ -6791,8 +6815,7 @@ dependencies = [
 [[package]]
 name = "sp1-derive"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "caf58192d37ca0568d2b166b9ef1212eea8b83b8776d09bc116cc975168160aa"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "quote",
  "syn 1.0.109",
@@ -6807,7 +6830,7 @@ dependencies = [
  "bincode",
  "elliptic-curve",
  "serde",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -6829,10 +6852,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "sp1-primitives"
+version = "4.1.4"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
+dependencies = [
+ "bincode",
+ "hex",
+ "lazy_static",
+ "num-bigint 0.4.6",
+ "p3-baby-bear",
+ "p3-field",
+ "p3-poseidon2",
+ "p3-symmetric",
+ "serde",
+ "sha2",
+]
+
+[[package]]
 name = "sp1-prover"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "27103239b13e2841ac27ea0941258a406061746a483ce9de9bf69c0dab330ce4"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "anyhow",
  "bincode",
@@ -6861,7 +6900,7 @@ dependencies = [
  "sha2",
  "sp1-core-executor",
  "sp1-core-machine",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-recursion-circuit",
  "sp1-recursion-compiler",
  "sp1-recursion-core",
@@ -6876,8 +6915,7 @@ dependencies = [
 [[package]]
 name = "sp1-recursion-circuit"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e996cd4da78f92ec6fad1d5e9cea03c2ec629ad5be5c3c04535bfc4514e6db41"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "hashbrown 0.14.5",
  "itertools 0.13.0",
@@ -6900,7 +6938,7 @@ dependencies = [
  "sp1-core-executor",
  "sp1-core-machine",
  "sp1-derive",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-recursion-compiler",
  "sp1-recursion-core",
  "sp1-recursion-gnark-ffi",
@@ -6911,8 +6949,7 @@ dependencies = [
 [[package]]
 name = "sp1-recursion-compiler"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "247dee5143c4a64be7915006bfa38002ec086d8004dce60493e0d4d4c91f3dfb"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "backtrace",
  "itertools 0.13.0",
@@ -6922,7 +6959,7 @@ dependencies = [
  "p3-symmetric",
  "serde",
  "sp1-core-machine",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-recursion-core",
  "sp1-recursion-derive",
  "sp1-stark",
@@ -6933,8 +6970,7 @@ dependencies = [
 [[package]]
 name = "sp1-recursion-core"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a198fa54df37af32d953855fe6bca5148c974878def97bb808c563b38ce1280c"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "backtrace",
  "cbindgen",
@@ -6964,7 +7000,7 @@ dependencies = [
  "serde",
  "sp1-core-machine",
  "sp1-derive",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-stark",
  "static_assertions",
  "thiserror 1.0.69",
@@ -6976,8 +7012,7 @@ dependencies = [
 [[package]]
 name = "sp1-recursion-derive"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b39250369fa4718b28030ac3548f867022efcd99c1f2f705e1a57710564646f9"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "quote",
  "syn 1.0.109",
@@ -6986,8 +7021,7 @@ dependencies = [
 [[package]]
 name = "sp1-recursion-gnark-ffi"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0962d2c3cee15533dc14ed1bda781af6e7bce2acbeff7abc77d4ff56646d5d6f"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "anyhow",
  "bincode",
@@ -7012,8 +7046,7 @@ dependencies = [
 [[package]]
 name = "sp1-sdk"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0be727829b2541d11b7e0953215a6a2e362c1f09b8ff69344ff3a109450ecdd8"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "alloy-primitives",
  "alloy-signer 0.11.1",
@@ -7042,7 +7075,7 @@ dependencies = [
  "sp1-core-executor",
  "sp1-core-machine",
  "sp1-cuda",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "sp1-prover",
  "sp1-stark",
  "strum 0.26.3",
@@ -7058,8 +7091,7 @@ dependencies = [
 [[package]]
 name = "sp1-stark"
 version = "4.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86efb046f8e5d01898fe67889a70dcc41efa605b9d173945f58f6be16049a5ef"
+source = "git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration#c18e29de3d2897803b1e115e52cdf0acc9793ccc"
 dependencies = [
  "arrayref",
  "hashbrown 0.14.5",
@@ -7083,7 +7115,7 @@ dependencies = [
  "rayon-scan",
  "serde",
  "sp1-derive",
- "sp1-primitives",
+ "sp1-primitives 4.1.4 (git+https://github.com/gevulotnetwork/sp1?branch=feature%2Fcuda-gpu-configuration)",
  "strum 0.26.3",
  "strum_macros 0.26.4",
  "sysinfo",

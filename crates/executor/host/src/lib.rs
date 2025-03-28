@@ -47,7 +47,7 @@ pub fn create_op_block_execution_strategy_factory(genesis: &Genesis) -> OpEvmCon
 
     OpEvmConfig::optimism(chain_spec)
 }
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
     pub chain: Chain,
     pub genesis: Genesis,

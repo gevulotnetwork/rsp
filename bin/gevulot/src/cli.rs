@@ -19,6 +19,10 @@ pub struct Args {
     #[clap(long, env, default_value_t = 3)]
     pub execution_retries: usize,
 
+    /// Number of GPUs available for the prover.
+    #[clap(long, env, default_value_t = 1)]
+    pub gpu_count: usize,
+
     /// Number of all workers in the Gevulot pool.
     #[clap(long, env)]
     pub total_workers: u64,

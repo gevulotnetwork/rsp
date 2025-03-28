@@ -44,6 +44,8 @@ async fn main() -> eyre::Result<()> {
     let args = Args::parse();
     let config = args.as_config().await?;
 
+    info!("Running with args: {:?}", args);
+
     let elf = include_elf!("rsp-client").to_vec();
     let block_execution_strategy_factory =
         create_eth_block_execution_strategy_factory(&config.genesis, None);
@@ -64,27 +66,40 @@ async fn main() -> eyre::Result<()> {
     let subscription = ws_provider.subscribe_blocks().await?;
     let mut stream = subscription.into_stream().map(|h| h.number);
 
-    // SP1 - use CPU for execution, CUDA for proving.
-    // NOTE: At this point moongate container gets created, stopped when variable gets dropped.
-    let moongate_endpoint = None;
-    let prover_client = Arc::new(CudaProver::new(SP1Prover::new(), moongate_endpoint));
+    // Pool of SP1 provers.
+    let num_provers = args.gpu_count;
+    info!("Creating executors pool of {} SP1 provers...", num_provers);
+    let (executors_pool_tx, mut executors_pool_rx) = tokio::sync::mpsc::channel(num_provers);
+    for gpu_id in 0..num_provers {
+        info!("Creating SP1 prover for GPU {}", gpu_id);
+        // SP1 - use CPU for execution, CUDA for proving.
+        // NOTE: At this point moongate container gets created, stopped when variable gets dropped.
+        let moongate_endpoint = None;
+        let selected_gpu = Some(gpu_id as u8);
+        let prover_client =
+            Arc::new(CudaProver::new(SP1Prover::new(), moongate_endpoint, selected_gpu));
 
-    let execution_hooks = eth_proofs_client; // For now we can just submit every block to staging.
-    let executor = Arc::new(
-        FullExecutor::<EthExecutorComponents<_, _>, _>::try_new(
-            http_provider.clone(),
-            elf,
-            block_execution_strategy_factory,
-            prover_client,
-            execution_hooks,
-            config,
-        )
-        .await?,
-    );
+        let execution_hooks = eth_proofs_client.clone(); // TODO: Allow disabling this hook.
+        let executor = Arc::new(
+            FullExecutor::<EthExecutorComponents<_, _>, _>::try_new(
+                http_provider.clone(),
+                elf.clone(),
+                block_execution_strategy_factory.clone(),
+                prover_client.clone(),
+                execution_hooks,
+                config.clone(),
+            )
+            .await?,
+        );
 
+        executors_pool_tx.send(executor).await?;
+    }
+    info!("Executors pool ready");
     info!("Latest block number: {}", http_provider.get_block_number().await?);
 
     let concurrent_tasks_semaphore = Arc::new(Semaphore::new(args.max_concurrent_tasks));
+
+    let mut handles = Vec::new();
 
     while let Some(block_number) = stream.next().await {
         info!("Received block: {:?}", block_number);
@@ -95,15 +110,29 @@ async fn main() -> eyre::Result<()> {
             info!("Skipping, block {} is for worker {}", block_number, target_worker_pos);
             continue;
         }
-        info!("Processing block {} on worker {}", block_number, args.worker_pos);
 
-        let executor = executor.clone();
+        let executor = match executors_pool_rx.recv().await {
+            Some(executor) => executor,
+            None => {
+                error!("No executors available, exiting...");
+                break;
+            }
+        };
         let alerting_client = alerting_client.clone();
+        let executors_pool_tx_clone = executors_pool_tx.clone();
+        info!(
+            "Block {} will be processed on worker {} (waiting for permit...)",
+            block_number, args.worker_pos
+        );
         let task_permit = concurrent_tasks_semaphore.clone().acquire_owned().await?;
 
-        task::spawn(async move {
-            match process_block(block_number, executor, args.execution_retries).await {
-                Ok(_) => info!("Successfully processed block {}", block_number),
+        info!("Processing block {} on worker {}", block_number, args.worker_pos);
+        let task_handle = task::spawn(async move {
+            let executor_arc_clone = executor.clone();
+            match process_block(block_number, executor_arc_clone, args.execution_retries).await {
+                Ok(_) => {
+                    info!("Successfully processed block {}", block_number);
+                }
                 Err(err) => {
                     let error_message = format!("Error executing block {}: {}", block_number, err);
                     error!("{error_message}");
@@ -114,9 +143,16 @@ async fn main() -> eyre::Result<()> {
                 }
             }
 
+            // Return the executor back to the pool.
+            executors_pool_tx_clone.send(executor).await.unwrap();
+
             drop(task_permit);
         });
+        handles.push(task_handle);
     }
+
+    info!("Waiting for all tasks to finish...");
+    futures::future::join_all(handles).await;
 
     Ok(())
 }
