@@ -45,8 +45,15 @@ where
 
     if let Some(cache_dir) = config.cache_dir {
         return Ok(Either::Right(
-            CachedExecutor::try_new(elf, client, hooks, cache_dir, config.chain.id(), config.prove)
-                .await?,
+            CachedExecutor::try_new(
+                elf,
+                client,
+                hooks,
+                cache_dir,
+                config.chain.id(),
+                config.prove,
+            )
+            .await?,
         ));
     }
 
@@ -139,8 +146,6 @@ pub trait BlockExecutor<C: ExecutorComponents> {
                 proving_duration,
             )
             .await?;
-
-        info!("Proof successfully generated!");
 
         Ok(())
     }
@@ -357,7 +362,15 @@ where
         })
         .await?;
 
-        Ok(Self { cache_dir, chain_id, client, pk: Arc::new(pk), vk: Arc::new(vk), hooks, prove })
+        Ok(Self {
+            cache_dir,
+            chain_id,
+            client,
+            pk: Arc::new(pk),
+            vk: Arc::new(vk),
+            hooks,
+            prove,
+        })
     }
 }
 

@@ -3,6 +3,7 @@ members = [
     "bin/host",
     "bin/continuous",
     "bin/eth-proofs",
+    "bin/gevulot",
     "crates/executor/client",
     "crates/executor/host",
     "crates/mpt",
@@ -51,12 +52,11 @@ rsp-mpt = { path = "./crates/mpt" }
 rsp-primitives = { path = "./crates/primitives" }
 rsp-provider = { path = "./crates/provider" }
 
-
-# sp1
-sp1-build = "4.1.6"
-sp1-core-executor = "4.1.6"
-sp1-prover = "4.1.6"
-sp1-sdk = "4.1.6"
+# sp1 (with a custom feature of selecting particular GPU)
+sp1-build = { version = "4.1.7", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-core-executor = { version = "4.1.7", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-prover = { version = "4.1.7", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
+sp1-sdk = { version = "4.1.7", git = "https://github.com/gevulotnetwork/sp1", branch = "feature/cuda-gpu-configuration" }
 
 # reth
 reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.4", default-features = false }
